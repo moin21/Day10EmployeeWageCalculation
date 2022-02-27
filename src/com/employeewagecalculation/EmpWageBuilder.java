@@ -4,20 +4,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EmpWageBuilder {
-
-	private static ArrayList<CompanyEmpWage> CompanyList = new ArrayList<CompanyEmpWage>();
 	Scanner scan = new Scanner(System.in);
 
-	public static ArrayList<CompanyEmpWage> getCompanyList() {
-		return CompanyList;
-	}
-
-	public static void setCompanyList(ArrayList<CompanyEmpWage> companyList) {
-		CompanyList = companyList;
-	}
-
+	/*
+	 * method to compute the employee wage
+	 */
 	public static void computeEmployeeWage(CompanyEmpWage e) {
-
 		final int IS_PART_TIME = 1;
 		final int IS_FULL_TIME = 2;
 		final int PART_TIME_HOURS = 4;
@@ -26,10 +18,15 @@ public class EmpWageBuilder {
 		int days = 0;
 		int hours = 0;
 
+		/*
+		 * we have used the getters to access the values and storing it in the local
+		 * variable
+		 */
 		String name = e.getName();
 		int no_of_days = e.getDays();
 		int max_hours_in_month = e.getHours();
 		int wages_per_hour = e.getWage();
+		ArrayList<String> daily_wages = e.getDaily_wages();
 
 		while (days < no_of_days && hours < max_hours_in_month) {
 
@@ -41,30 +38,30 @@ public class EmpWageBuilder {
 
 			switch (attendance) {
 			case 0:
-				// System.out.println(" Employee is absent. ");
 				break;
 
 			case IS_PART_TIME:
 				if (hours + PART_TIME_HOURS > max_hours_in_month) {
-//						System.out.println(" skip");
 					break;
 				}
-//					System.out.println(" part time");
 				hours += PART_TIME_HOURS;
 				days++;
+				daily_wages.add("part time: " + (PART_TIME_HOURS * wages_per_hour));
 				break;
 			case IS_FULL_TIME:
 				if (hours + FULL_TIME_HOURS > max_hours_in_month) {
-//						System.out.println(" skip");
 					break;
 				}
-//					System.out.println(" full time");
 				hours += FULL_TIME_HOURS;
 				days++;
+				daily_wages.add("full time: " + (FULL_TIME_HOURS * wages_per_hour));
 				break;
 			}
 		}
 
+		/*
+		 * saving the computed values with the help of setters.
+		 */
 		e.setDays(days);
 		e.setHours(hours);
 		e.setWage(hours * wages_per_hour);
